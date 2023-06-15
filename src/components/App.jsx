@@ -1,32 +1,44 @@
-import { useSelector } from 'react-redux';
-
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-import { Layout } from './Layout/Layout';
-import { Section } from './Section/Section';
-import { Title } from './Title/Title';
-import { Filter } from './Filter/Filter';
+import css from 'components/App.module.css';
 import { ContactForm } from './ContactForm/ContactForm';
+import { Filter } from './Filter/Filter';
 import { ContactList } from './ContactList/ContactList';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { selectError, selectIsLoading } from '../redux/selectors/selectors';
+import { ThreeDots } from 'react-loader-spinner';
+import { fetchContacts } from "../redux/operations";
+import { getAllContacts } from 'redux/selectors/selectors';
 
-import { getContacts } from 'redux/contacts/contacts-selectors';
 
 export const App = () => {
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(getAllContacts);
+  const error = useSelector(selectError);
+  const isLoading = useSelector(selectIsLoading);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+
   return (
-    <Layout>
-      <Section title="PhoneBook">
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: 40,
+        color: '#010101'
+      }}
+    >
+      <div>
+        <h1 className={css.title}>Phonebook</h1>
         <ContactForm />
-        {contacts.length > 0 && (
-          <>
-            <Title title="Contacts" />
-            <Filter />
-            <ContactList />
-          </>
-        )}
-      </Section>
-      <ToastContainer />
-    </Layout>
+        <h2 className={css.title}>Contacts</h2>
+        <Filter />
+        {isLoading&&!error?<div className={css.loader}><ThreeDots /></div>:<ContactList />}
+        {!contacts.length && <p className={css.messageUser}>There are no contacts in the Phonebook</p>}
+      </div>
+    </div>
   );
 };

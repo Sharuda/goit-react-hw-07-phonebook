@@ -1,21 +1,19 @@
-import styled from 'styled-components';
-
-export const List = styled.ul`
+.contactList {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
+}
 
-  max-width: 100%;
-  width: 300px;
-`;
-export const Item = styled.li`
+.item {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-weight: 500;
+  font-size: 24px;
+
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-`;
+}
 
-export const Btn = styled.button`
+.btnContactList {
   border: none;
   outline: none;
   border-radius: 8px;
@@ -23,4 +21,4 @@ export const Btn = styled.button`
   padding: 5px;
   color: #000;
   cursor: pointer;
-`;
+}
